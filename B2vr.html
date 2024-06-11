@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B2vr's Night Menu</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, rgb(66, 0, 128), rgb(33, 0, 66));
+            text-align: center;
+            color: rgb(140, 0, 255);
+            border-radius: 20px;
+            margin: 10px;
+            font-family: Arial, sans-serif;
+            overflow-y: scroll;
+            scroll-behavior: smooth;
+        }
+        .button {
+            width: 600px;
+            height: 40px;
+            background-color: rgb(200, 0, 200);
+            color: rgb(12, 11, 11);
+            border: none;
+            cursor: pointer;
+            margin: 10px 0;
+            font-weight: bold;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .button:hover {
+            background-color: rgb(180, 0, 180);
+            transform: scale(1.05);
+        }
+        hr {
+            border: 0;
+            height: 2px;
+            background: rgb(95, 95, 95);
+            border-radius: 10px;
+            width: 80%;
+            margin: 20px auto;
+        }
+        h1 {
+            border-radius: 10px;
+            display: inline-block;
+            padding: 10px 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        div {
+            border-radius: 10px;
+            display: inline-block;
+            padding: 10px;
+        }
+        #rainCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="rainCanvas"></canvas>
+    <h1>B2vr's Night Menu</h1>
+    <hr>
+    <div>
+        <a href="https://www.youtube.com/@B2vrB2vr" target="_blank" title="goober">
+            <button class="button">My YouTube</button>
+        </a>
+        <a href="https://discord.gg/q6r5GN27T7" target="_blank" title="goober">
+            <button class="button">My Discord</button>
+        </a>
+    </div>
+    <script>
+        const canvas = document.getElementById('rainCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Raindrop {
+            constructor(x, y, length, speed) {
+                this.x = x;
+                this.y = y;
+                this.length = length;
+                this.speed = speed;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(this.x, this.y + this.length);
+                ctx.strokeStyle = 'rgba(30, 0, 50, 0.5)';
+                ctx.lineWidth = 1;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+            }
+
+            update() {
+                this.y += this.speed;
+                if (this.y > canvas.height) {
+                    this.y = 0 - this.length;
+                    this.x = Math.random() * canvas.width;
+                }
+                this.draw();
+            }
+        }
+
+        const raindrops = [];
+
+        function init() {
+            for (let i = 0; i < 1000; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const length = Math.random() * 20 + 10;
+                const speed = Math.random() * 5 + 2;
+                raindrops.push(new Raindrop(x, y, length, speed));
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            raindrops.forEach(raindrop => raindrop.update());
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+    </script>
+</body>
+</html>
