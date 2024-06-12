@@ -65,11 +65,28 @@
             pointer-events: none;
             z-index: -1;
         }
+        #toggleButton {
+            width: 200px;
+            height: 40px;
+            background-color: rgb(140, 0, 255);
+            color: rgb(12, 11, 11);
+            border: none;
+            cursor: pointer;
+            margin: 10px 0;
+            font-weight: bold;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        #toggleButton:hover {
+            background-color: rgb(120, 0, 220);
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
     <canvas id="rainCanvas"></canvas>
-    <h1>B2vr's Night Menu</h1>
+    <h1 id="b2vr">B2vr's Night Menu</h1>
     <hr>
     <div>
         <a href="https://www.youtube.com/@B2vrB2vr" target="_blank" title="goober">
@@ -79,11 +96,17 @@
             <button class="button">My Discord</button>
         </a>
     </div>
+    <button id="toggleButton">Switch to Snow</button>
     <script>
         const canvas = document.getElementById('rainCanvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+
+        const b2vrElement = document.getElementById('b2vr');
+        const b2vrButtonRect = b2vrElement.getBoundingClientRect();
+
+        let isSnowing = false;
 
         class Raindrop {
             constructor(x, y, length, speed) {
@@ -97,7 +120,7 @@
                 ctx.beginPath();
                 ctx.moveTo(this.x, this.y);
                 ctx.lineTo(this.x, this.y + this.length);
-                ctx.strokeStyle = 'rgba(30, 0, 50, 0.5)';
+                ctx.strokeStyle = 'rgba(128, 128, 128, 0.7)';  // Gray color
                 ctx.lineWidth = 1;
                 ctx.lineCap = 'round';
                 ctx.stroke();
@@ -109,29 +132,92 @@
                     this.y = 0 - this.length;
                     this.x = Math.random() * canvas.width;
                 }
+                // Prevent raindrops from appearing over the B2vr block
+                const b2vrRect = b2vrElement.getBoundingClientRect();
+                if (this.x > b2vrRect.left && this.x < b2vrRect.right && this.y > b2vrRect.top && this.y < b2vrRect.bottom) {
+                    this.y = b2vrRect.bottom + this.length;
+                }
                 this.draw();
             }
         }
 
-        const raindrops = [];
+        class Snowflake {
+            constructor(x, y, radius, speed) {
+                this.x = x;
+                this.y = y;
+                this.radius = radius;
+                this.speed = speed;
+                this.angle = Math.random() * Math.PI * 2;
+            }
 
-        function init() {
-            for (let i = 0; i < 1000; i++) {
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.fill();
+            }
+
+            update() {
+                this.y += this.speed;
+                this.x += Math.sin(this.angle) * 0.5;
+                if (this.y > canvas.height) {
+                    this.y = 0 - this.radius;
+                    this.x = Math.random() * canvas.width;
+                }
+
+                // Prevent snowflakes from appearing over the B2vr block
+                const b2vrRect = b2vrElement.getBoundingClientRect();
+                if (this.x > b2vrRect.left && this.x < b2vrRect.right && this.y > b2vrRect.top && this.y < b2vrRect.bottom) {
+                    this.y = b2vrRect.bottom + this.radius;
+                }
+
+                this.draw();
+            }
+        }
+
+        const particles = [];
+
+        function initRain() {
+            particles.length = 0;
+            for (let i = 0; i < 200; i++) {
                 const x = Math.random() * canvas.width;
                 const y = Math.random() * canvas.height;
                 const length = Math.random() * 20 + 10;
                 const speed = Math.random() * 5 + 2;
-                raindrops.push(new Raindrop(x, y, length, speed));
+                particles.push(new Raindrop(x, y, length, speed));
+            }
+        }
+
+        function initSnow() {
+            particles.length = 0;
+            for (let i = 0; i < 200; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const radius = Math.random() * 3 + 1;
+                const speed = Math.random() * 1 + 0.5;
+                particles.push(new Snowflake(x, y, radius, speed));
             }
         }
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            raindrops.forEach(raindrop => raindrop.update());
+            particles.forEach(particle => particle.update());
             requestAnimationFrame(animate);
         }
 
-        init();
+        document.getElementById('toggleButton').addEventListener('click', () => {
+            isSnowing = !isSnowing;
+            if (isSnowing) {
+                document.getElementById('toggleButton').textContent = 'Switch to Rain';
+                initSnow();
+            } else {
+                document.getElementById('toggleButton').textContent = 'Switch to Snow';
+                initRain();
+            }
+        });
+
+        // Initialize with rain
+        initRain();
         animate();
     </script>
 </body>
