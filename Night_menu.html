@@ -16,7 +16,7 @@
             scroll-behavior: smooth;
         }
         .button {
-            width: 600px;
+            width: 800px;
             height: 40px;
             background-color: rgb(200, 0, 200);
             color: rgb(12, 11, 11);
@@ -46,6 +46,7 @@
             padding: 10px 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             animation: pulse 2s infinite;
+            background-color: rgba(0, 0, 0, 0.3);
         }
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
@@ -66,7 +67,7 @@
             z-index: -1;
         }
         #toggleButton {
-            width: 200px;
+            width: 800px;
             height: 40px;
             background-color: rgb(140, 0, 255);
             color: rgb(12, 11, 11);
@@ -96,7 +97,9 @@
             <button class="button">My Discord</button>
         </a>
     </div>
-    <button id="toggleButton">Switch to Snow</button>
+    <div>
+        <button id="toggleButton">Switch to Snow</button>
+    </div>
     <script>
         const canvas = document.getElementById('rainCanvas');
         const ctx = canvas.getContext('2d');
@@ -204,7 +207,7 @@
             particles.forEach(particle => particle.update());
             requestAnimationFrame(animate);
         }
-
+        
         document.getElementById('toggleButton').addEventListener('click', () => {
             isSnowing = !isSnowing;
             if (isSnowing) {
