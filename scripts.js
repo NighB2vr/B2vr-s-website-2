@@ -4,15 +4,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     learnMoreBtn.addEventListener('click', function() {
         var isHidden = moreInfo.style.display === 'none';
-
-        moreInfo.style.display = isHidden ? 'block' : 'none';
+        moreInfo.style.transition = 'opacity 0.3s ease';
+        moreInfo.style.opacity = isHidden ? '1' : '0';
+        moreInfo.style.display = 'block'; // ensure it’s visible before changing opacity
         learnMoreBtn.textContent = isHidden ? 'Show Less' : 'Learn More';
+        
+        setTimeout(function() {
+            moreInfo.style.display = isHidden ? 'block' : 'none';
+        }, 300); // delay hiding until opacity transition ends
     });
 
     particlesJS('particles-js', {
         particles: {
             number: {
-                value: 80,
+                value: 60, // Reduced for performance
                 density: {
                     enable: true,
                     value_area: 800
@@ -57,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             move: {
                 enable: true,
-                speed: 6,
+                speed: 3, // Reduced for smoother performance
                 direction: 'none',
                 out_mode: 'out'
             }
