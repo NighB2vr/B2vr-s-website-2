@@ -1,0 +1,76 @@
+/* Body and Wrapper */
+body {
+    margin: 0;
+    padding: 0;
+    background: #0d0d0d;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    z-index: 0;
+}
+
+#particle-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(42, 42, 42, 0.85);
+    padding: 60px 40px;
+    border-radius: 20px;
+    box-shadow: 0 0 50px rgba(7, 210, 34, 0.8), 0 0 100px rgba(8, 161, 49, 0.5);
+    text-align: center;
+    z-index: 1;
+}
+
+.avatar-container {
+    margin-bottom: 30px;
+}
+
+.avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid #0ac053;
+    box-shadow: 0 0 30px #1ba639;
+}
+
+.username {
+    font-size: 2.5em;
+    margin-bottom: 40px;
+    color: #72ff4f;
+    text-shadow: 0 0 10px #119607, 0 0 20px rgba(8, 194, 33, 0.7);
+}
+
+/* Cool Button */
+.cool-button {
+    display: inline-block;
+    margin: 20px;
+    padding: 15px 40px;
+    background: linear-gradient(135deg, #228d07, #0dc606);
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 1.2em;
+    transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 0 20px rgba(2, 217, 42, 0.8), 0 0 40px rgba(7, 182, 28, 0.5);
+}
+
+.cool-button:hover {
+    background: linear-gradient(135deg, #13b61b, #11b713);
+    box-shadow: 0 0 40px rgb(21, 193, 27), 0 0 80px rgba(8, 153, 47, 0.6);
+    transform: translateY(-5px);
+}
